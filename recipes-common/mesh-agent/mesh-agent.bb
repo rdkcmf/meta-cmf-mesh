@@ -24,11 +24,14 @@ CFLAGS_append = " \
     -I${STAGING_INCDIR}/dbus-1.0 \
     -I${STAGING_LIBDIR}/dbus-1.0/include \
     -I${STAGING_INCDIR}/ccsp \
+    -I${STAGING_INCDIR}/trower-base64 \
     -I${STAGING_INCDIR}/libsafec \
     -DENABLE_MESH_SOCKETS \
     "
 CFLAGS_append = " ${@bb.utils.contains('DISTRO_FEATURES', 'safec',  ' `pkg-config --cflags libsafec`', '-fPIC', d)}"
 CFLAGS_append = " ${@bb.utils.contains('DISTRO_FEATURES', 'safec', '', ' -DSAFEC_DUMMY_API', d)}"
+
+CFLAGS += " -Wall -Werror -Wextra -Wno-pointer-sign -Wno-int-to-pointer-cast -Wno-address "
 
 LDFLAGS_append = " \
     -ldbus-1 \
