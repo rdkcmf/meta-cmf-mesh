@@ -4,7 +4,7 @@ LICENSE = "Apache-2.0"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=175792518e4ac015ab6696d16c4f607e"
 
 
-DEPENDS = "ccsp-common-library utopia dbus rdk-logger telemetry"
+DEPENDS = "ccsp-common-library utopia dbus rdk-logger telemetry wrp-c cjson libparodus"
 DEPENDS_append = " ${@bb.utils.contains('DISTRO_FEATURES', 'safec', ' safec', " ", d)}"
 
 DEPENDS_append_dunfell = " trower-base64"
@@ -26,6 +26,9 @@ CFLAGS_append = " \
     -I${STAGING_INCDIR}/ccsp \
     -I${STAGING_INCDIR}/trower-base64 \
     -I${STAGING_INCDIR}/libsafec \
+    -I${STAGING_INCDIR}/cjson \
+    -I${STAGING_INCDIR}/wrp-c \
+    -I${STAGING_INCDIR}/libparodus \
     -DENABLE_MESH_SOCKETS \
     "
 CFLAGS_append = " ${@bb.utils.contains('DISTRO_FEATURES', 'safec',  ' `pkg-config --cflags libsafec`', '-fPIC', d)}"
@@ -37,12 +40,18 @@ LDFLAGS_append = " \
     -ldbus-1 \
     -lrdkloggers \
     -ltelemetry_msgsender \
+    -lm \
+    -lcjson \
+    -lwrp-c \
+    -llibparodus \
 "
 LDFLAGS_append = " ${@bb.utils.contains('DISTRO_FEATURES', 'safec', ' `pkg-config --libs libsafec`', '', d)}"
 
 S = "${WORKDIR}/git"
 
 inherit autotools systemd pkgconfig
+
+EXTRA_OECONF_append = " ${@bb.utils.contains('DISTRO_FEATURES', 'gtestapp', '--enable-gtestapp', '', d)}"
 
 do_install_append () {
     # Config files and scripts
