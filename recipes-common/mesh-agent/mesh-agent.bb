@@ -75,6 +75,12 @@ do_install_append () {
 
     install -m 775 ${S}/config/MeshAgent.cfg -t ${D}/usr/ccsp/mesh
     install -m 775 ${S}/config/MeshAgentDM.cfg -t ${D}/usr/ccsp/mesh
+
+    #Add OneWifi flag for enabling OVS and Opensync
+    if ${@bb.utils.contains('DISTRO_FEATURES', 'OneWifi', 'true', 'false', d)}; then
+        install -d ${D}/etc
+        touch ${D}/etc/onewifi_enabled
+    fi
 }
 
 PACKAGES += "${PN}-ccsp"
@@ -105,6 +111,7 @@ FILES_${PN} = " \
     ${systemd_unitdir}/system/meshwifi.service \
     ${libdir}/libMeshAgentSsp.so* \
 "
+FILES_${PN} += " ${@bb.utils.contains('DISTRO_FEATURES', 'OneWifi', '/etc/onewifi_enabled', '', d)} "
 
 FILES_${PN}-dbg = " \
     ${prefix}/ccsp/mesh/.debug \
