@@ -86,6 +86,8 @@ do_install_append () {
         install -d ${D}/etc
         touch ${D}/etc/onewifi_enabled
     fi
+    install -d ${D}${sbindir}
+    install -m 777 ${S}/scripts/xmesh_diagnostic ${D}${sbindir}/xmesh_diagnostic
 }
 
 PACKAGES += "${PN}-ccsp"
@@ -115,6 +117,7 @@ FILES_${PN} = " \
     ${systemd_unitdir}/system/meshAgent.path \
     ${systemd_unitdir}/system/meshwifi.service \
     ${libdir}/libMeshAgentSsp.so* \
+    ${sbindir}/xmesh_diagnostic \
 "
 FILES_${PN} += " ${@bb.utils.contains('DISTRO_FEATURES', 'OneWifi', '/etc/onewifi_enabled', '', d)} "
 
