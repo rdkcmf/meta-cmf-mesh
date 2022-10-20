@@ -56,6 +56,11 @@ inherit autotools systemd pkgconfig
 EXTRA_OECONF_append = " ${@bb.utils.contains('DISTRO_FEATURES', 'gtestapp', '--enable-gtestapp', '', d)}"
 EXTRA_OECONF_append = " ${@bb.utils.contains('DISTRO_FEATURES', 'WanFailOverSupportEnable', ' --enable-wanfailover ', '', d)}"
 EXTRA_OECONF_append = " ${@bb.utils.contains('DISTRO_FEATURES', 'OneWifi', ' --enable-onewifi ', '', d)}"
+EXTRA_OECONF_append = " ${@bb.utils.contains('DISTRO_FEATURES', 'gateway_manager', ' --enable-gatewayfailoversupport ', '', d)}"
+EXTRA_OECONF_append = " ${@bb.utils.contains('DISTRO_FEATURES', 'rdkb_extender', ' --enable-rdkb_extender ', '', d)}"
+
+# Enable OneWifi for this component only to fix build issues
+EXTRA_OECONF_append = " --enable-onewifi "
 
 do_install_append () {
     # Config files and scripts
