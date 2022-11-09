@@ -58,6 +58,7 @@ EXTRA_OECONF_append = " ${@bb.utils.contains('DISTRO_FEATURES', 'WanFailOverSupp
 EXTRA_OECONF_append = " ${@bb.utils.contains('DISTRO_FEATURES', 'OneWifi', ' --enable-onewifi ', '', d)}"
 EXTRA_OECONF_append = " ${@bb.utils.contains('DISTRO_FEATURES', 'gateway_manager', ' --enable-gatewayfailoversupport ', '', d)}"
 EXTRA_OECONF_append = " ${@bb.utils.contains('DISTRO_FEATURES', 'rdkb_extender', ' --enable-rdkb_extender ', '', d)}"
+EXTRA_OECONF_append = " ${@bb.utils.contains('DISTRO_FEATURES', 'rdkb_ledmanager', ' --enable-rdkb_ledmanager ', '', d)}"
 
 # Enable OneWifi for this component only to fix build issues
 EXTRA_OECONF_append = " --enable-onewifi "
@@ -88,6 +89,7 @@ do_install_append () {
     fi
     install -d ${D}${sbindir}
     install -m 777 ${S}/scripts/xmesh_diagnostic ${D}${sbindir}/xmesh_diagnostic
+    install -m 777 ${S}/scripts/led_control_script.sh ${D}${sbindir}/led_control_script.sh
 }
 
 PACKAGES += "${PN}-ccsp"
@@ -118,6 +120,7 @@ FILES_${PN} = " \
     ${systemd_unitdir}/system/meshwifi.service \
     ${libdir}/libMeshAgentSsp.so* \
     ${sbindir}/xmesh_diagnostic \
+    ${sbindir}/led_control_script.sh \
 "
 FILES_${PN} += " ${@bb.utils.contains('DISTRO_FEATURES', 'OneWifi', '/etc/onewifi_enabled', '', d)} "
 
